@@ -21,6 +21,7 @@ class ProductsController {
 
     async createProducts(req, res) {
         try {
+            console.log('bu');
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
             const products = await this.productsService.createProducts(req.body);
@@ -58,7 +59,7 @@ class ProductsController {
         }
     }
     
-    async searchProductss(req, res) {
+    async searchProducts(req, res) {
         try {
             const productss = await this.productsService.searchProductssByName(req.query.name);
             res.json(productss);

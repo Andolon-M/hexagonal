@@ -28,6 +28,13 @@ class Products{
         const res = await collection.deleteMany({ _id: new ObjectId(id) });
         return res;
     }
+
+    async find(find){
+        let obj = ConnectToDatabase.instanceConnect;
+        const collection = obj.db.collection('productos');
+        const res = await collection.find(find).toArray();
+        return res;
+    }
     
 }
 

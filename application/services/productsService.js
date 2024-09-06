@@ -1,13 +1,13 @@
 // Implementa la lógica de negocio y coordina las interacciones entre el dominio y la infraestructura.
-const ProductsRepository = require('../../domain/repositories/ProductsRepository');
+const ProductsRepository = require('../../domain/repositories/productsRepository');
 
 class ProductsService {
     constructor() {
-        this.ProductsRepository = new ProductsRepository();
+        this.productsRepository = new ProductsRepository();
     }
 
     async getProductsById(id) {
-        const Products = await this.ProductsRepository.getById(id);
+        const Products = await this.productsRepository.getById(id);
         if (!Products) {
             throw new Error(JSON.stringify({status: 404, message: 'Products not found'}));
         }
@@ -15,12 +15,13 @@ class ProductsService {
     }
 
     async createProducts(data) {
+        console.log('bu');
         // Puedes agregar validaciones o lógica adicional aquí antes de guardar
-        return await this.ProductsRepository.save(data);
+        return await this.productsRepository.save(data);
     }
 
     async updateProducts(id, data) {
-        const updatedProducts = await this.ProductsRepository.updateById(id, data);
+        const updatedProducts = await this.productsRepository.updateById(id, data);
         if (!updatedProducts) {
             throw new Error(JSON.stringify({status: 404, message: 'Products not found or could not be updated'}));
         }
@@ -28,7 +29,7 @@ class ProductsService {
     }
 
     async deleteProducts(id) {
-        const deletedProducts = await this.ProductsRepository.deleteById(id);
+        const deletedProducts = await this.productsRepository.deleteById(id);
         if (!deletedProducts) {
             throw new Error(JSON.stringify({status: 404, message: 'Products not found or could not be deleted'}));
         }        
@@ -36,7 +37,7 @@ class ProductsService {
     }
     
     async searchProductssByName(name) {
-        return await this.ProductsRepository.searchByName(name);
+        return await this.productsRepository.searchByName(name);
     }
 }
 

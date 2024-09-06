@@ -1,11 +1,12 @@
 // Contiene la interfaz para interactuar con la base de datos o cualquier otro tipo de almacenamiento de datos.
+const e = require('express');
 const Products = require('../models/productsModel')
 
 class ProductsRepository {
     async getById(id) {
         try {
-            const Products = new Products();
-            return await Products.findById(id);
+            const products = new Products();
+            return await products.findById(id);
         } catch (error) {
             throw new Error(JSON.stringify({status: 400, message: 'Error retrieving Products'}));
         }
@@ -13,18 +14,20 @@ class ProductsRepository {
 
     async save(ProductsData) {
         try {
-            const Products = new Products();
-            return await Products.insert(ProductsData);
+            const products = new Products();
+            return await products.insert(ProductsData);
         } catch (error) {
+            console.log('bu');
+            
             throw new Error(JSON.stringify({status: 500, message: 'Error saving Products'}));
         }
     }
 
     async updateById(id, updateData) {
         try {
-            const Products = new Products();
+            const products = new Products();
             // { upsert: true } // Si es verdadero, inserta un nuevo documento si no existe
-            return await Products.findByIdAndUpdate(id, updateData, { upsert: true });
+            return await products.findByIdAndUpdate(id, updateData, { upsert: true });
         } catch (error) {
             throw new Error(JSON.stringify({status: 500, message: 'Error updating Products'}));
         }
@@ -32,8 +35,8 @@ class ProductsRepository {
 
     async deleteById(id) {
         try {
-            const Products = new Products();
-            return await Products.findByIdAndDelete(id);
+            const products = new Products();
+            return await products.findByIdAndDelete(id);
         } catch (error) {
             throw new Error(JSON.stringify({status: 404, message: 'Error deleting Products'}));
         }
@@ -41,7 +44,8 @@ class ProductsRepository {
 
     async searchByName(name) {
         try {
-            return await Products.find({ name: new RegExp(name, 'i') });
+            const products = new Products();
+            return await products.find({ name: new RegExp(name, 'i') });
         } catch (error) {
             throw new Error('Error searching for Productss');
         }

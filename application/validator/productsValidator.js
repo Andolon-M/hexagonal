@@ -1,10 +1,10 @@
 const { body, query, param } = require("express-validator");
 const { ObjectId } = require("mongodb");
-class UserValidator {
-    validateUserData = () => {
+class ProductsValidator {
+    validateProductsData = () => {
         return [
-            body('name').notEmpty().isNumeric().withMessage('The name is mandatory'),
-            body('precio').notEmpty().isString().withMessage('The price is mandatory'),
+            body('name').notEmpty().isString().withMessage('The name is mandatory'),
+            body('price').notEmpty().isNumeric().withMessage('The price is mandatory'),
             
             query().custom((value, { req }) => {
                 if (Object.keys(req.query).length > 0) {
@@ -15,7 +15,7 @@ class UserValidator {
         ];
     };
 
-    validateUserDataEmpty = () => {
+    validateProductsDataEmpty = () => {
         return [
             body().custom((value, { req }) => {
                 if (Object.keys(req.body).length > 0) {
@@ -32,7 +32,7 @@ class UserValidator {
         ];
     };
 
-    validateUserId = () => {
+    validateProductsId = () => {
         return [
             param('id').custom((value, { req }) => {
                 if (!ObjectId.isValid(value)) {
@@ -55,10 +55,10 @@ class UserValidator {
         ];
     };
 
-    validateUserUpdateDataById = () => {
+    validateProductsUpdateDataById = () => {
         return [   
-            body('name').notEmpty().isNumeric().withMessage('The name is mandatory'),
-            body('precio').notEmpty().isString().withMessage('The price is mandatory'),
+            body('name').notEmpty().isString().withMessage('The name is mandatory'),
+            body('price').notEmpty().isNumeric().withMessage('The price is mandatory'),
             
             param('id').custom((value, { req }) => {
                 if (!ObjectId.isValid(value)) {
@@ -76,4 +76,4 @@ class UserValidator {
     };
 }
 
-module.exports = UserValidator;
+module.exports = ProductsValidator;
