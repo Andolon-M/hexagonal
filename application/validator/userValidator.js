@@ -7,6 +7,7 @@ class UserValidator {
             body('names').notEmpty().isString().withMessage('The name is mandatory'),
             body('surnames').isString().withMessage('send the last name'),
             body('nick').notEmpty().isString().withMessage('Send the nickname you will have in the system'),
+            body('password').notEmpty().isString().withMessage('The password is mandatory'),
             body('email').notEmpty().isEmail().withMessage('Send the email'),
             body('phone').isString().withMessage('Send the phone'),
             body('role', 'The role was not sent').notEmpty().exists().custom((value) => {

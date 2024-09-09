@@ -14,6 +14,14 @@ class UserService {
         return user;
     }
 
+    async getUserbyNick(nick) {
+        const user = await this.userRepository.getByNick(nick);
+        if (!user) {
+            throw new Error(JSON.stringify({status: 404, message: 'User not found'}));
+        }
+        return user;
+    }
+
     async createUser(data) {
         // Puedes agregar validaciones o lógica adicional aquí antes de guardar
         return await this.userRepository.save(data);

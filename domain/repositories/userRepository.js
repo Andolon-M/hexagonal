@@ -11,6 +11,16 @@ class UserRepository {
         }
     }
 
+    async getByNick(nick) {
+        try {
+            const user = new User();
+            return await user.findByNick(nick);
+        } catch (error) {
+            throw new Error(JSON.stringify({status: 400, message: 'Error retrieving user'}));
+        }
+    }
+
+
     async save(userData) {
         try {
             const user = new User();

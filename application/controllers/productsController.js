@@ -57,6 +57,7 @@ class ProductsController {
             const errorObj = JSON.parse(error.message);
             res.status(errorObj.status).json({ message: errorObj.message });
         }
+        
     }
     
     async searchProducts(req, res) {

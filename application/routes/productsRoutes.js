@@ -2,6 +2,7 @@
 const express = require('express');
 const ProductsController = require('../controllers/productsController');
 const ProductsValidator = require('../validator/productsValidator');
+const { autenticateToken } = require('../../infrastructure/middlewares/autenticateToken');
 
 const router = express.Router();
 const productsController = new ProductsController();
@@ -12,6 +13,5 @@ router.get('/:id', productsValidator.validateProductsId(), (req, res) => product
 router.post('/', productsValidator.validateProductsData(), (req, res) => productsController.createProducts(req, res));
 router.put('/:id', productsValidator.validateProductsUpdateDataById(), (req, res) => productsController.updateProducts(req, res));
 router.delete('/:id', productsValidator.validateProductsId(), (req, res) => productsController.deleteProducts(req, res));
-
 
 module.exports = router;
