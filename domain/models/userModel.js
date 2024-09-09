@@ -8,9 +8,7 @@ class User{
         const [res] = await collection.find({_id: new ObjectId(id)}).toArray();
         return res;
     }
-    async findByNick (nick) {
-        console.log(nick);
-        
+    async findByNick (nick) {        
         let obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection('cliente');
         const [res] = await collection.find({nick: nick}).toArray();

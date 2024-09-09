@@ -88,13 +88,11 @@ class UserController {
 
     async login(req, res){
         try {
-            console.log('bueaaa');
             
             const {nick, password}= req.body;
             const userExiste = await this.getUserbyNick(nick)
 
             if (!userExiste) return res.status(400).json({message: "Usuario no encontrado"})
-            console.log(userExiste);
             
             const isMatch = await bcrypt.compare(password, userExiste?.password);
             if (!isMatch) return res.status(400).json({message: "Contraseña incorrecta"})
