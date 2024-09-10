@@ -2,7 +2,6 @@
 const express = require('express');
 const ProductsController = require('../controllers/productsController');
 const ProductsValidator = require('../validator/productsValidator');
-const { autenticateToken } = require('../../infrastructure/middlewares/autenticateToken');
 
 const router = express.Router();
 const productsController = new ProductsController();

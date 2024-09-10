@@ -2,7 +2,6 @@
 const express = require('express');
 const userRoutes = require('../../application/routes/userRoutes');
 const productsRoutes = require('../../application/routes/productsRoutes');
-const authRoutes = require('../../application/routes/authRoutes');
 
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling');
 const { limiTotal } = require('../middlewares/rateLimit');

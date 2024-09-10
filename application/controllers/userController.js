@@ -1,5 +1,5 @@
 // Gestiona las peticiones HTTP y las respuestas, delegando la lógica de negocio a los servicios.
-const { validationResult } = require('express-validator');
+const { validationResult, body } = require('express-validator');
 const UserService = require('../services/userService');
 
 const bcrypt = require('bcryptjs');
@@ -42,8 +42,25 @@ class UserController {
             const hashedPassword = await bcrypt.hash(password, 10);
             req.body.password = hashedPassword;
 
+            // //validar que el nuevo usuario no exista aun.
+            const usuarioExiste = await this.userExiste(req.body)
+            if (usuarioExiste) return res.status(usuarioExiste?.status).json({message:usuarioExiste?.message, fieldDuplicate: usuarioExiste?.field});
             const user = await this.userService.createUser(req.body);
             res.status(201).json(user);
+        } catch (error) {
+            const errorObj = JSON.parse(error.message);
+            res.status(errorObj.status).json({ message: errorObj.message });
+        }
+    }
+
+    async userExiste(user){
+        try {
+            const userExiste = await this.userService.getUserNickOrEmailOrCedula(user?.nick, user?.email, user?.cedula);
+            console.log(userExiste);
+            
+            if (userExiste)return {status:409, message:'datos de usuario duplicados', field: userExiste?.firstMatch }
+            
+            return false
         } catch (error) {
             const errorObj = JSON.parse(error.message);
             res.status(errorObj.status).json({ message: errorObj.message });
@@ -92,7 +109,7 @@ class UserController {
             const {nick, password}= req.body;
             const userExiste = await this.getUserbyNick(nick)
 
-            if (!userExiste) return res.status(400).json({message: "Usuario no encontrado"})
+            if (!userExiste) return res.status(404).json({message: "Usuario no encontrado"})
             
             const isMatch = await bcrypt.compare(password, userExiste?.password);
             if (!isMatch) return res.status(400).json({message: "Contraseña incorrecta"})

@@ -20,6 +20,33 @@ class UserRepository {
         }
     }
 
+    async getByEmail(email) {
+        try {
+            const user = new User();
+            return await user.findByEmail(email);
+        } catch (error) {
+            throw new Error(JSON.stringify({status: 400, message: 'Error retrieving user'}));
+        }
+    }
+
+    async getByDni(dni) {
+        try {
+            const user = new User();
+            return await user.findByDni(dni);
+        } catch (error) {
+            throw new Error(JSON.stringify({status: 400, message: 'Error retrieving user'}));
+        }
+    }
+
+    async getByNickOrEmailOrCedula(nick, email, cedula){
+        try {
+            const user = new User();
+            return await user.findByNickOrEmailOrCedula(nick, email, cedula)
+        } catch (error) {
+            return {status: 500, message: error.message}
+        }
+    }
+
 
     async save(userData) {
         try {

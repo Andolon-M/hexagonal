@@ -5,9 +5,12 @@ class UserValidator {
         return [
             body('cedula').notEmpty().isNumeric().withMessage('The cedula is mandatory'),
             body('names').notEmpty().isString().withMessage('The name is mandatory'),
-            body('surnames').isString().withMessage('send the last name'),
             body('nick').notEmpty().isString().withMessage('Send the nickname you will have in the system'),
-            body('password').notEmpty().isString().withMessage('The password is mandatory'),
+            body('password') .isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 8 caracteres.')
+            .matches(/\d/).withMessage('Debe contener al menos un número.')
+            .matches(/[A-Z]/).withMessage('Debe contener al menos una letra mayúscula.')
+            .matches(/[a-z]/).withMessage('Debe contener al menos una letra minúscula.')
+            .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Debe contener un carácter especial.'),
             body('email').notEmpty().isEmail().withMessage('Send the email'),
             body('phone').isString().withMessage('Send the phone'),
             body('role', 'The role was not sent').notEmpty().exists().custom((value) => {
@@ -69,7 +72,6 @@ class UserValidator {
         return [   
             body('cedula').notEmpty().isNumeric().withMessage('The cedula is mandatory'),
             body('names').notEmpty().isString().withMessage('The name is mandatory'),
-            body('surnames').isString().withMessage('send the last name'),
             body('nick').notEmpty().isString().withMessage('Send the nickname you will have in the system'),
             body('email').notEmpty().isEmail().withMessage('Send the email'),
             body('phone').isString().withMessage('Send the phone'),

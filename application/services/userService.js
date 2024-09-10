@@ -22,6 +22,31 @@ class UserService {
         return user;
     }
 
+    async getUserbyEmail(email) {
+        const user = await this.userRepository.getByEmail(email);
+        if (!user) {
+            throw new Error(JSON.stringify({status: 404, message: 'User not found'}));
+        }
+        return user;
+    }
+
+    async getUserbyDni(dni) {
+        const user = await this.userRepository.getByDni(dni);
+        if (!user) {
+            throw new Error(JSON.stringify({status: 404, message: 'User not found'}));
+        }
+        return user;
+    }
+
+    async getUserNickOrEmailOrCedula(nick, email, cedula){
+        try{
+        const user = await this.userRepository.getByNickOrEmailOrCedula(nick, email, cedula);
+        return user;
+        } catch(error){
+            return {status: 500, error: error.message};
+        }
+    }
+
     async createUser(data) {
         // Puedes agregar validaciones o lógica adicional aquí antes de guardar
         return await this.userRepository.save(data);
