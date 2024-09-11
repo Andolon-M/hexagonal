@@ -6,8 +6,8 @@ const startApp = async () => {
     await connectToDatabase.connectOpen();
     const app = createServer();
 
-    app.listen({port: process.env.EXPRESS_PORT, host:process.env.EXPRESS_HOST}, () => {
-        console.log(`http://${process.env.EXPRESS_HOST}:${process.env.EXPRESS_PORT}`);
+    app.listen({port: process.env.VITE_PORT_BACKEND, host:process.env.VITE_HOST}, () => {
+        console.log(`http://${process.env.VITE_HOST}:${process.env.VITE_PORT_BACKEND}`);
     });
 };
 
