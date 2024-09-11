@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "flowbite": "^2.5.1",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "vue": "^3.4.37"
   },
   "devDependencies": {
