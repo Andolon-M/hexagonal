@@ -1,15 +1,21 @@
 {
-  "name": "mvc",
-  "version": "1.0.0",
-  "main": "app.js",
+  "name": "exagonal",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "node --watch --env-file .env app.js"
+
+    "dev": "vite",
+    "start": "node --watch --env-file .env ./api/app.cjs",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
+    "vue": "^3.4.37"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.2",
+    "vite": "^5.4.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
