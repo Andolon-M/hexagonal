@@ -3,6 +3,7 @@ const express = require('express');
 const UserController = require('../controllers/userController');
 const UserValidator = require('../validator/userValidator');
 const { autenticateToken } = require('../../infrastructure/middlewares/autenticateToken');
+const cookieParser = require('cookie-parser');
 
 const router = express.Router();
 const userController = new UserController();
@@ -14,5 +15,5 @@ router.put('/:id', autenticateToken, userValidator.validateUserUpdateDataById(),
 router.delete('/:id', autenticateToken, userValidator.validateUserId(), (req, res) => userController.deleteUser(req, res));
 router.get('/search', autenticateToken, (req, res) => userController.searchUsers(req, res));
 
-router.post('/login', (req, res) => userController.login(req, res));
+router.post('/login', cookieParser(), (req, res) => userController.login(req, res));
 module.exports = router; 

@@ -108,8 +108,8 @@ class UserController {
             
             const {nick, password}= req.body;
             const userExiste = await this.getUserbyNick(nick)
-
-            if (!userExiste) return res.status(404).json({message: "Usuario no encontrado"})
+                       
+            if (userExiste?.status === 404) return res.status(404).json({message: "Usuario no encontrado"})
             
             const isMatch = await bcrypt.compare(password, userExiste?.password);
             if (!isMatch) return res.status(400).json({message: "Contraseña incorrecta"})
@@ -119,7 +119,8 @@ class UserController {
                 process.env.JWT_SECRET, 
                 {expiresIn: '60s'}
             );
-            res.cookie(userExiste?.nick, `Bearer ${token}`).json({token})
+
+            res.cookie(userExiste?.nick, `Bearer ${token}`, {maxAge: process.env.EXPRESS_EXPIRE}).json(token)
             
         } catch (error) {
 
