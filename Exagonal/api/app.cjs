@@ -1,5 +1,5 @@
-const ConnectToDatabase = require('./infrastructure/database/mongodb');
-const createServer = require('./infrastructure/server/server');
+const ConnectToDatabase = require('./infrastructure/database/mongodb.cjs');
+const createServer = require('./infrastructure/server/server.cjs');
 
 const startApp = async () => {
     let connectToDatabase = new ConnectToDatabase();

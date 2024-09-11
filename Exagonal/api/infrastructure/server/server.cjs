@@ -1,11 +1,11 @@
 // Configuración y puesta en marcha del servidor Express.
 const express = require('express');
-const userRoutes = require('../../application/routes/userRoutes');
-const productsRoutes = require('../../application/routes/productsRoutes');
+const userRoutes = require('../../application/routes/userRoutes.cjs');
+const productsRoutes = require('../../application/routes/productsRoutes.cjs');
 
-const { jsonParseErrorHandler } = require('../middlewares/errorHandling');
-const { limiTotal } = require('../middlewares/rateLimit');
-const { autenticateToken } = require('../middlewares/autenticateToken');
+const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
+const { limiTotal } = require('../middlewares/rateLimit.cjs');
+const { autenticateToken } = require('../middlewares/autenticateToken.cjs');
 
 
 

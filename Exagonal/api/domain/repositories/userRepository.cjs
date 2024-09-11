@@ -1,5 +1,5 @@
 // Contiene la interfaz para interactuar con la base de datos o cualquier otro tipo de almacenamiento de datos.
-const User = require('../models/userModel');
+const User = require('../models/userModel.cjs');
 
 class UserRepository {
     async getById(id) {

@@ -1,10 +1,10 @@
 // Gestiona las peticiones HTTP y las respuestas, delegando la lógica de negocio a los servicios.
 const { validationResult, body } = require('express-validator');
-const UserService = require('../services/userService');
+const UserService = require('../services/userService.cjs');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { use } = require('../routes/userRoutes');
+const { use } = require('../routes/userRoutes.cjs');
 
 class UserController {
     constructor() {
@@ -117,7 +117,7 @@ class UserController {
             const token = jwt.sign(
                 {userName : userExiste?.nick},
                 process.env.JWT_SECRET, 
-                {expiresIn: '60s'}
+                {expiresIn: process.env.VITE_EXPRESS_EXPIRE}
             );
 
             res.cookie(userExiste?.nick, `Bearer ${token}`, {maxAge: process.env.EXPRESS_EXPIRE}).json(token)

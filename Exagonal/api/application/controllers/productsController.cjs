@@ -1,6 +1,6 @@
 // Gestiona las peticiones HTTP y las respuestas, delegando la lógica de negocio a los servicios.
 const { validationResult } = require('express-validator');
-const ProductsService = require('../services/productsService');
+const ProductsService = require('../services/productsService.cjs');
 
 class ProductsController {
     constructor() {

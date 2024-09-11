@@ -1,6 +1,6 @@
 // Contiene la interfaz para interactuar con la base de datos o cualquier otro tipo de almacenamiento de datos.
 const e = require('express');
-const Products = require('../models/productsModel')
+const Products = require('../models/productsModel.cjs')
 
 class ProductsRepository {
     async getById(id) {

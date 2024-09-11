@@ -1,8 +1,8 @@
 // Define las rutas de la aplicación y mapea las URLs a los controladores.
 const express = require('express');
-const UserController = require('../controllers/userController');
-const UserValidator = require('../validator/userValidator');
-const { autenticateToken } = require('../../infrastructure/middlewares/autenticateToken');
+const UserController = require('../controllers/userController.cjs');
+const UserValidator = require('../validator/userValidator.cjs');
+const { autenticateToken } = require('../../infrastructure/middlewares/autenticateToken.cjs');
 const cookieParser = require('cookie-parser');
 
 const router = express.Router();

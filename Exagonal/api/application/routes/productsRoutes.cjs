@@ -1,7 +1,7 @@
 // Define las rutas de la aplicación y mapea las URLs a los controladores.
 const express = require('express');
-const ProductsController = require('../controllers/productsController');
-const ProductsValidator = require('../validator/productsValidator');
+const ProductsController = require('../controllers/productsController.cjs');
+const ProductsValidator = require('../validator/productsValidator.cjs');
 
 const router = express.Router();
 const productsController = new ProductsController();
