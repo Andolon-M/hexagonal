@@ -16,4 +16,5 @@ router.delete('/:id', autenticateToken, userValidator.validateUserId(), (req, re
 router.get('/search', autenticateToken, (req, res) => userController.searchUsers(req, res));
 
 router.post('/login', cookieParser(), (req, res) => userController.login(req, res));
+router.post('/vefiryToken', autenticateToken)
 module.exports = router; 

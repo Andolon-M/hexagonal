@@ -11,7 +11,7 @@ const routes = [
     { path: '/', component: Home },
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: Createuser },
-    { path: '/products', name: 'Products', component: Product, meta: { requiresAuth: true }},
+    { path: '/products', name: 'Products', component: Product, meta: { requiresAuth: true } },
 
 ]
 
@@ -21,18 +21,28 @@ const router = createRouter({
     routes
 });
 // Guardia global para verificar cookies
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     // Si la ruta requiere autenticación
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        const token = Cookies.get('token'); // Verifica la cookie 'token' (o la cookie que uses para la autenticación)
+        const token = Cookies.get('andolon'); 
+        console.log(token);
+
+        const res = await fetch('/api/users/vefiryToken', {
+            method: 'POST', 
+            headers: {
+              'Content-Type': 'application/json',  
+              'Authorization': `Bearer ${token}` ,
+            }
+          })
+
+        const tokenvalid = await res.json()
+        console.log(tokenvalid);
         
-        if (!token) {
-            // Si no hay cookie, redirige al login
-            next({ name: 'Login' });
-        } else {
-            // Si hay cookie, permite el acceso
-            next();
-        }
+
+        if (!tokenvalid?.token)  next({ name: 'Login' });
+
+        next();
+
     } else {
         next(); // Si no requiere autenticación, sigue normalmente
     }
