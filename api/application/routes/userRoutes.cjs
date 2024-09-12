@@ -2,19 +2,22 @@
 const express = require('express');
 const UserController = require('../controllers/userController.cjs');
 const UserValidator = require('../validator/userValidator.cjs');
-const { autenticateToken } = require('../../infrastructure/middlewares/autenticateToken.cjs');
-const cookieParser = require('cookie-parser');
+const { auth } = require('../../infrastructure/middlewares/auth.cjs');
+const sessionAuth = require('../../infrastructure/middlewares/sessionLogin.cjs');
 
 const router = express.Router();
 const userController = new UserController();
 const userValidator = new UserValidator();
 
-router.get('/:id', autenticateToken, userValidator.validateUserId(), (req, res) => userController.getUser(req, res));
-router.post('/', userValidator.validateUserData(), (req, res) => userController.createUser(req, res));
-router.put('/:id', autenticateToken, userValidator.validateUserUpdateDataById(), (req, res) => userController.updateUser(req, res));
-router.delete('/:id', autenticateToken, userValidator.validateUserId(), (req, res) => userController.deleteUser(req, res));
-router.get('/search', autenticateToken, (req, res) => userController.searchUsers(req, res));
+//rutas de login
+router.post('/login', sessionAuth, (req, res) => userController.login(req, res));
+router.get('/vefiryToken', sessionAuth, auth, (req, res) => res.status(200).json({menssage: 'token valido', token: true}))
 
-router.post('/login', cookieParser(), (req, res) => userController.login(req, res));
-router.post('/vefiryToken', autenticateToken)
+//rutas de crud usuarios
+router.post('/', userValidator.validateUserData(), (req, res) => userController.createUser(req, res));
+router.get('/:id', sessionAuth, auth, userValidator.validateUserId(), (req, res) => userController.getUser(req, res));
+router.put('/:id', sessionAuth, auth, userValidator.validateUserUpdateDataById(), (req, res) => userController.updateUser(req, res));
+router.delete('/:id', sessionAuth, auth, userValidator.validateUserId(), (req, res) => userController.deleteUser(req, res));
+router.get('/search', sessionAuth, auth, (req, res) => userController.searchUsers(req, res));
+
 module.exports = router; 

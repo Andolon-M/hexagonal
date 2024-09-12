@@ -5,7 +5,8 @@ const productsRoutes = require('../../application/routes/productsRoutes.cjs');
 
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
-const { autenticateToken } = require('../middlewares/autenticateToken.cjs');
+const { auth } = require('../middlewares/auth.cjs');
+const sessionAuth = require('../middlewares/sessionLogin.cjs');
 
 
 
@@ -17,7 +18,7 @@ const createServer = () => {
     
 
     app.use('/users',  userRoutes);
-    app.use('/products', autenticateToken, productsRoutes);
+    app.use('/products', sessionAuth, auth, productsRoutes);
     return app;
 };
 

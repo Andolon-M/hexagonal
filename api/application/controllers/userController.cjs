@@ -120,7 +120,8 @@ class UserController {
                 {expiresIn: process.env.VITE_EXPRESS_EXPIRE}
             );
 
-            res.cookie(userExiste?.nick, `Bearer ${token}`, {maxAge: process.env.EXPRESS_EXPIRE}).json(token)
+            req.session.token = `Bearer ${token}`;
+            res.status(200).json({menssage: 'login successful'})
             
         } catch (error) {
 

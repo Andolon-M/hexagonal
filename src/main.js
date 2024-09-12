@@ -24,16 +24,8 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     // Si la ruta requiere autenticación
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        const token = Cookies.get('andolon'); 
-        console.log(token);
 
-        const res = await fetch('/api/users/vefiryToken', {
-            method: 'POST', 
-            headers: {
-              'Content-Type': 'application/json',  
-              'Authorization': `Bearer ${token}` ,
-            }
-          })
+        const res = await fetch('/api/users/vefiryToken')
 
         const tokenvalid = await res.json()
         console.log(tokenvalid);
