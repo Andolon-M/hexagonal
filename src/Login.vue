@@ -1,17 +1,49 @@
 <template>
     <Suspense>
         <template #default>
-            <section class="bg-slate-50 dark:bg-backgrond dark:text-white font-semibold h-screen w-screen overflow-x-hidden pb-28">
-                <div class="flex flex-col h-auto w-60 m-4 shadow-md rounded-xl p-2">
-                    <label for="username">Ingrese el nombre de usuario</label>
-                    <input v-model="nick" type="text" id="username" required>
-                    <label for="password">Ingrese la contraseña</label>
-                    <input v-model="password" type="password" id="password" required>
-                    <button @click="handleSubmit" type="button">Iniciar sesión</button>
+            <div>
+
+                <div>
+                    <header>
+                        <div class="header__logo">
+                            <img src="./assets/img/Star.svg">
+                        </div>
+                    </header>
+                    <main>
+                        <section class="section__form">
+                            <h1>Log in</h1>
+                            <div class="login">
+                                <label for="username">Email address</label>
+                                <input v-model="nick" type="text" id="username" placeholder="example@correo.com"
+                                    required>
+                                <label for="password">Password</label>
+                                <input v-model="password" type="password" id="password" placeholder="Your Password">
+                                <span>Forgot password?</span>
+                                <button @click="handleSubmit" type="button">Iniciar sesión</button>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="section__line">
+                                <span>Or Login with</span>
+                            </div>
+                            <div class="section__social">
+                                <button><img src="./assets/img/Facebook.svg"></button>
+                                <button><img src="./assets/img/Google.svg"></button>
+                                <button><img src="./assets/img/Apple.svg"></button>
+                            </div>
+                        </section>
+                    </main>
+                    <footer>
+                        <router-link to="Register" class=".footer-link" :class="{ active: $route.path === '/register' }">
+                            <span :class="{ active: $route.path === '/register' }">Don’t have an account? <b>Sign
+                                    up</b></span>
+                        </router-link>
+                    </footer>
                 </div>
-            </section>
+
+            </div>
         </template>
-        <template #fallback>
+        <template #loading>
             <div>Loading...</div>
         </template>
     </Suspense>
@@ -19,6 +51,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const nick = ref('');
 const password = ref('');
@@ -37,19 +72,154 @@ const handleSubmit = async () => {
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const data = await response.json();
+            alert(data?.message);
+            throw new Error(data?.message);
         }
 
         const data = await response.json();
-        console.log('Login successful:', data);
-        // Maneja la respuesta del servidor aquí
+        alert('Login successful')
+
+        router.push('/dashboard');  // Redireccionar a /productsr
+
     } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        // Maneja errores aquí
+        console.error('User name or Password incorrect:', error);
+
     }
 };
+
 </script>
 
 <style scoped>
-/* Añade tus estilos aquí si es necesario */
+@import url(./variables.css);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter_18pt-Regular";
+    color: #000;
+}
+
+header,
+main,
+footer {
+    margin: 0 20px;
+}
+
+header {
+    margin-top: 47px;
+    /* background: red; */
+}
+
+.header__logo {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+main {
+    margin-bottom: 50px;
+}
+
+.section__form {
+    /* background: red; */
+    display: flex;
+    flex-direction: column;
+}
+
+.section__form h1 {
+    padding-bottom: 38px;
+    font-family: "Inter_18pt-Bold";
+    font-size: 30px;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+}
+
+.login label {
+    font-size: 14px;
+    padding-bottom: 6px;
+}
+
+.login input,
+.login button,
+.section__social button {
+    margin-bottom: 22px;
+    border: none;
+    outline: none;
+    /* background: red; */
+    border-radius: 10px;
+    width: 100%;
+    height: 56px;
+    font-family: "Inter_18pt-SemiBold";
+    font-size: 16px;
+}
+
+.login input[type="email"],
+.login input[type="password"] {
+    border: 1px solid #747474;
+    font-family: "Inter_18pt-Regular";
+    font-size: 16px;
+    padding: 16px 46px 16px 18px;
+}
+
+.login span {
+    font-size: 14px;
+    text-align: right;
+    margin-bottom: 38px;
+}
+
+.login button[type="button"] {
+    background: #000;
+    color: #fff;
+}
+
+.section__line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.section__line::before,
+.section__line::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #D8DADC;
+}
+
+.section__line::before {
+    margin-right: 10px;
+}
+
+.section__line::after {
+    margin-left: 10px;
+}
+
+.section__social {
+    display: flex;
+    gap: 15px;
+}
+
+.section__social button {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid #D8DADC;
+    height: 56px;
+    background: #fff;
+}
+
+footer {
+    /* background: red;  */
+    text-align: center;
+}
+
+.footer-link {
+    font-family: "Inter_18pt-SemiBold";
+    font-size: 14px;
+}
 </style>
