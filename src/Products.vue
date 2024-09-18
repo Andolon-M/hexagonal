@@ -181,7 +181,6 @@ onMounted(() => {
     outline: none;
     border: none;
     text-decoration: none;
-    text-transform: capitalize;
 }
 
 html {

@@ -196,4 +196,8 @@ footer {
     font-family: "Inter_18pt-SemiBold";
     font-size: 14px;
 }
+
+input[type="text"], input[type="email"], input[type="password"] {
+    text-transform: none;
+}
 </style>

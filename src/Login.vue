@@ -60,13 +60,15 @@ const password = ref('');
 
 const handleSubmit = async () => {
     try {
+        console.log(nick.value);
+        
         const response = await fetch('/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                nick: nick.value.toUpperCase(),
+                nick: nick.value,
                 password: password.value
             })
         });
@@ -222,4 +224,6 @@ footer {
     font-family: "Inter_18pt-SemiBold";
     font-size: 14px;
 }
+
+
 </style>
