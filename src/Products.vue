@@ -5,15 +5,17 @@
                 <span class="message">Hexagonal by express</span>
                 <div class="container">
                     <div class="admin-product-form-container">
-                        <form id="myForm" action="/user/v1" method="POST"> <!-- enctype="multipart/form-data" -->
-                            <h3>add a new info</h3>
-                            <!-- <input type="number" placeholder="Enter the user code" name="codigo" class="box"> -->
-                            <input type="text" placeholder="Enter the name of product" name="name" class="box">
-                            <input type="number" placeholder="Enter the price" name="price" class="box">
-                            <input type="file" accept="image/png, image/jpeg, image/jpg" name="product_image"
-                                class="box">
-                            <input type="submit" class="btn" name="add" value="add">
-                        </form>
+                        <div id="myForm">
+                            <form @submit.prevent="addOrupdateProduct">
+                                <h3>{{ isEditing ? 'Edit product' : 'Add a new product' }}</h3>
+                                <!-- Cambia el título del formulario dependiendo del estado -->
+                                <input type="text" placeholder="Enter the name of product" v-model="name" class="box" />
+                                <input type="number" placeholder="Enter the price" v-model="price" class="box" />
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" @change="handleFileUpload"
+                                    class="box" />
+                                <input type="submit" class="btn" value="Send" />
+                            </form>
+                        </div>
                     </div>
                     <div class="product-display">
                         <table class="product-display-table">
@@ -55,92 +57,111 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-// Estado para manejar la lista de productos
 const products = ref([]);
 
-let name = ref('');
-let price = ref('');
-let photo = ref('');
+// Variables reactivas para el formulario
+const name = ref('');
+const price = ref(0);
+const productImage = ref(null);
+const isEditing = ref(false); // Bandera para saber si estamos editando
+const editingProductId = ref(null); // Guardar el ID del producto que estamos editando
 
-// Función para obtener los productos al cargar la página
 const fetchProducts = async () => {
     try {
         const response = await fetch('/api/products');
         const data = await response.json();
         products.value = data;
-        console.log( products.value[0]);
     } catch (error) {
         console.error('Error fetching products:', error);
     }
 };
 
-// Función para eliminar un protucto
-const deleteProduct = async (productId) =>{
+const deleteProduct = async (productId) => {
     try {
         const response = await fetch(`/api/products/${productId}`, {
             method: 'DELETE',
         });
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         fetchProducts();
         console.log('Product deleted successfully');
     } catch (error) {
         console.error('Error deleting product:', error);
-    
-    }
-}
-
-
-// Función para editar un producto
-const editProduct = async (product) => {
-    try {
-        const response = await fetch(`/api/products/${product._id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(product),
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response}`);
-        }
-        fetchProducts();
-        console.log('Product updated successfully');
-    } catch (error) {
-        console.error('Error updating product:', error);
     }
 };
 
-const addProduct = async () => {
+// Función para manejar la creación o actualización
+const addOrupdateProduct = async () => {
+    const productData = {
+        name: name.value,
+        price: price.value,
+        // Aquí puedes agregar el manejo de imágenes
+    };
+
     try {
-        const formData = new FormData();
-        formData.append('name', name.value);
-        formData.append('price', price.value);
-        formData.append('product_image', photo.value);
-        const response = await fetch('/api/products', {
-            method: 'POST',
-            body: formData,
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response}`);
+        if (isEditing.value && editingProductId.value) {
+            // Si esta editando, hacer una solicitud PUT ;)
+            const response = await fetch(`/api/products/${editingProductId.value}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            console.log('Product updated successfully');
+        } else {
+            // Si esta creando, hacer una solicitud POST ;)
+            const response = await fetch('/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            console.log('Product added successfully');
         }
+
+        // Después de la acción, restablecemos el formulario
+        resetForm();
         fetchProducts();
-        console.log('Product added successfully');
+    } catch (error) {
+        console.error('Error saving product:', error);
     }
-    catch (error) {
-        console.error('Error adding product:', error);
-    }   
-}
+};
 
-onMounted( () => {
-    // Obtener productos al cargar la página
+// Función para editar un producto
+const editProduct = (product) => {
+    name.value = product.name;
+    price.value = product.price;
+    editingProductId.value = product._id; // Guardar el ID del producto
+    isEditing.value = true; // Cambiar a modo edición
+};
+
+// Función para resetear el formulario
+const resetForm = () => {
+    name.value = '';
+    price.value = 0;
+    productImage.value = null;
+    isEditing.value = false;
+    editingProductId.value = null;
+};
+
+onMounted(() => {
     fetchProducts();
-    
-    
-
 });
 </script>
+
 
 <style>
 :root {
