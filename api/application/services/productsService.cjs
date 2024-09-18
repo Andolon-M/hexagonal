@@ -6,6 +6,14 @@ class ProductsService {
         this.productsRepository = new ProductsRepository();
     }
 
+    async getProducts() {
+        const Products = await this.productsRepository.getAll();
+        if (!Products) {
+            throw new Error(JSON.stringify({status: 404, message: 'Products not found'}));
+        }
+        return Products;
+    }
+
     async getProductsById(id) {
         const Products = await this.productsRepository.getById(id);
         if (!Products) {

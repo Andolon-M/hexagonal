@@ -80,7 +80,7 @@ const handleSubmit = async () => {
         const data = await response.json();
         alert('Login successful')
 
-        router.push('/dashboard');  // Redireccionar a /productsr
+        router.push('/products');  // Redireccionar a /productsr
 
     } catch (error) {
         console.error('User name or Password incorrect:', error);

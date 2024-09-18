@@ -11,6 +11,18 @@ class ProductsController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+            const products = await this.productsService.getProducts();
+            res.status(200).json(products);
+        } catch (error) {
+            const errorObj = JSON.parse(error.message);
+            res.status(errorObj.status).json({ message: errorObj.message });
+        }
+    }
+
+    async getProductsById(req, res) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
             const products = await this.productsService.getProductsById(req.params.id);
             res.status(200).json(products);
         } catch (error) {

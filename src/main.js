@@ -4,14 +4,14 @@ import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './Home.vue';
 import Login from './Login.vue'
-import Dashboard from './Dashboard.vue';
+import Products from './products.vue';
 import CreateUser from './CreateUser.vue';
 import Cookies from 'js-cookie'; // para manejar cookies
 const routes = [
     { path: '/', component: Home },
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: CreateUser },
-    { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    { path: '/products', name: 'Products', component: Products, meta: { requiresAuth: true } },
 
 ]
 

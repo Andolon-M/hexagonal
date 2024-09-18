@@ -3,6 +3,16 @@ const e = require('express');
 const Products = require('../models/productsModel.cjs')
 
 class ProductsRepository {
+    
+    async getAll() {
+        try {
+            const products = new Products();
+            return await products.findAll();
+        } catch (error) {
+            throw new Error(JSON.stringify({status: 400, message: 'Error retrieving Products'}));
+        }
+    }
+    
     async getById(id) {
         try {
             const products = new Products();

@@ -2,6 +2,16 @@ const { ObjectId } = require("mongodb");
 const ConnectToDatabase = require("../../infrastructure/database/mongodb.cjs");
 // Define el modelo de usuario y la lógica de negocio independiente de la tecnología de persistencia.
 class Products{
+    
+    async findAll () {
+        let obj = ConnectToDatabase.instanceConnect;
+        const collection = obj.db.collection('productos');
+        console.log('yujuu');
+        
+        const res = await collection.find().toArray();
+        return res;
+    }
+    
     async findById (id) {
         let obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection('productos');
