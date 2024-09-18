@@ -66,7 +66,7 @@ const handleSubmit = async () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                nick: nick.value,
+                nick: nick.value.toUpperCase(),
                 password: password.value
             })
         });
