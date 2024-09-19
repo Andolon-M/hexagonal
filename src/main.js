@@ -6,7 +6,6 @@ import Home from './Home.vue';
 import Login from './Login.vue'
 import Products from './products.vue';
 import CreateUser from './CreateUser.vue';
-import Cookies from 'js-cookie'; // para manejar cookies
 const routes = [
     { path: '/', component: Home },
     { path: '/login', name: 'Login', component: Login },
